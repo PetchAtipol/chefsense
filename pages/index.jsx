@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { storage } from "./firebase"
+import { storage } from "../lib/firebase"
 import { ref, uploadBytes, listAll, getDownloadURL, deleteObject, getMetadata } from "firebase/storage"
 import { v4 } from 'uuid'
 

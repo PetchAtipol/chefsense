@@ -13,7 +13,8 @@ export default function ChatApp() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/chat?data=' + encodeURIComponent(inputText));
+    //   const response = await axios.post('http://localhost:5000/chat?data=' + encodeURIComponent(inputText));
+      const response = await axios.post('https://chatbot-openthaigpt-demo.onrender.com/chat?data=' + encodeURIComponent(inputText));
       const botMessage = { text: response.data.response, sender: 'bot' };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {

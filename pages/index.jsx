@@ -48,20 +48,20 @@ export default function Home() {
     <div className="flex justify-center items-center h-screen w-screen">
       <div className="flex-col mt-[150px] md:mt-0">
         <div className="flex w-full justify-center h-auto">
-          <p className="font-thin text-[100px]">Chefsense</p>
+          <p className="font-thin text-[75px] mt-10 md:mt-0 md:text-[100px]">Chefsense</p>
         </div>
-        <div className="flex-col mt-12 md:mt-0 flex md:flex-row justify-center items-center w-auto h-auto border-2 px-5 py-5 rounded-md border-gray-600">
+        <div className="flex-col mt-12 md:mt-0 flex md:flex-row justify-center items-center w-[375px] md:w-auto h-auto border-2 px-5 py-5 rounded-md border-gray-600">
           <div className="flex-col flex">
-            <div className="flex">
+            <div className="flex justify-between w-[350px] md:w-auto">
               <input type="file"
                 id="fileInput"
                 onChange={(e) => { SetImageUpload(e.target.files[0]) }}
-                className="file:bg-white file:rounded-md file:font-medium file:py-1.5 file:px-3 file:hover:bg-black file:hover:border-2 file:hover:text-white file:duration-100 file:active:bg-white file:active:bottom-2 file:active:text-black file:border-black file:border-2 " />
+                className="w-[250px] file:bg-white file:rounded-md file:font-medium file:py-1.5 file:px-3 file:hover:bg-black file:hover:border-2 file:hover:text-white file:duration-100 file:active:bg-white file:active:bottom-2 file:active:text-black file:border-black file:border-2 " />
               <button onClick={uploadImage} className="py-1.5 px-3 rounded-md font-medium hover:bg-black hover:border-2 hover:text-white duration-100 active:bg-white active:bottom-2 active:text-black border-black border-2 ">
                 Upload
               </button>
             </div>
-            <div className="flex w-full justify-center mt-5">
+            <div className="flex w-full justify-center mt-0 md:mt-5">
               {isLoading && (
                 <div className="flex justify-center items-center">
                   <svg className="animate-spin h-10 w-10 text-blue-500" viewBox="0 0 24 24">
@@ -84,7 +84,7 @@ export default function Home() {
               )}
               {uploadImageUrl && (
                 <Image
-                  className="rounded-md"
+                  className="rounded-md mt-2 md:mt-0 "
                   src={uploadImageUrl}
                   width={300}
                   height={300}

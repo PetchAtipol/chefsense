@@ -13,8 +13,8 @@ export default function ChatApp() {
     setLoading(true);
 
     try {
-    //   const response = await axios.post('http://localhost:5000/chat?data=' + encodeURIComponent(inputText));
-      const response = await axios.post('https://chatbot-openthaigpt-demo.onrender.com/chat?data=' + encodeURIComponent(inputText));
+      const response = await axios.post('http://localhost:5000/chat?data=' + encodeURIComponent(inputText));
+    //   const response = await axios.post('https://chatbot-openthaigpt-demo.onrender.com/chat?data=' + encodeURIComponent(inputText));
       const botMessage = { text: response.data.response, sender: 'bot' };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
@@ -27,7 +27,7 @@ export default function ChatApp() {
   };
 
   return (
-    <div className="flex flex-col items-center h-[400px] w-[400px] p-4 ">
+    <div className="flex flex-col items-center h-[400px] w-[370px] md:w-[400px] p-4 ">
       <div className="w-full max-w-lg bg-white border-black border-2 rounded-lg p-4 flex flex-col h-full">
         <div className="flex-1 overflow-y-auto mb-4">
           {messages.map((msg, idx) => (

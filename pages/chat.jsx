@@ -39,7 +39,7 @@ export default function ChatApp() {
           {loading && <div className="text-center text-gray-500">Typing...</div>}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-between w-[305px] md:w-auto ">
           <input
             type="text"
             className="flex-1 p-2 border border-gray-300 rounded-lg"

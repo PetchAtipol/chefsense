@@ -17,6 +17,7 @@ export default function Home(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [textres, Settextres] = useState("");
   const [tutorialState, SetTutorialState] = useState(false);
+  const [yoloRes, SetYoloRes] = useState(false);
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const imageListRef = ref(storage, "ingredients/")
@@ -45,9 +46,11 @@ export default function Home(props) {
       setIsLoading(false);
 
       // ✅ Wait for API response
-      const response = await axios.get("http://localhost:8000/detect/latest");
+      // const response = await axios.get("http://localhost:8000/detect/latest");
+      const response = await axios.get("https://yolov8-api-4ain.onrender.com/detect/latest");
       console.log("Detection Response:", response.data);
       Settextres(response.data.detections)
+      SetYoloRes(true)
 
     } catch (error) {
       console.error("Error:", error);
@@ -99,7 +102,7 @@ export default function Home(props) {
           </div>
         </div>
       )}
-      <div className={clsx("flex flex-col mt-[150px] md:mt-0 items-center px-4")}>
+      <div className={clsx("flex flex-col mt-[150px] md:mt-0 items-center px-4", tutorialState && "blur-sm")}>
         {/* Title */}
         <div className="flex justify-center w-full">
           <p className="font-extrabold text-[50px] md:text-[100px] text-green-600 drop-shadow-md">Chefsense</p>
@@ -112,12 +115,12 @@ export default function Home(props) {
           <div className="flex flex-col items-center space-y-4 w-full md:w-auto">
 
             {/* Upload Inputs */}
-            <div className="flex flex-col md:flex-row gap-3 items-center">
+            <div className="flex md:flex-row gap-3 items-center ">
               <input
                 type="file"
                 id="fileInput"
                 onChange={(e) => SetImageUpload(e.target.files[0])}
-                className="w-[250px] file:bg-white file:text-green-700 file:border-2 file:border-green-600 file:px-4 file:py-2 file:rounded-md file:font-medium active:bg-green-800
+                className="cursor-pointer w-[250px] file:bg-white file:text-green-700 file:border-2 file:border-green-600 file:px-4 file:py-2 file:rounded-md file:font-medium active:bg-green-800
                hover:file:bg-green-600 hover:file:text-white transition duration-200"
               />
               <button
@@ -153,9 +156,10 @@ export default function Home(props) {
           </div>
 
           {/* Right Column: Chat Component */}
-          <div className="w-full md:w-[400px]">
-            <Chat initialPrompt={textres} />
-          </div>
+          {yoloRes && (
+            <div className="w-full md:w-[400px]">
+              <Chat initialPrompt={textres} />
+            </div>)}
         </div>
       </div>
     </div >

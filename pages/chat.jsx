@@ -18,6 +18,7 @@ export default function ChatApp({ initialPrompt }) {
     setLoading(true);
 
     try {
+      setInputText('');
       // const response = await axios.post('http://localhost:5000/chat?data=' + encodeURIComponent(inputText));
       //   const response = await axios.post('https://chatbot-openthaigpt-demo.onrender.com/chat?data=' + encodeURIComponent(inputText));
       const response = await axios.post('https://chatbot-4o-mini-demo.onrender.com/chat?data=' + encodeURIComponent(inputText));
@@ -30,7 +31,6 @@ export default function ChatApp({ initialPrompt }) {
       setLoading(false);
     }
 
-    setInputText('');
   };
 
   function formatChatGPTResponse(text) {
@@ -104,7 +104,7 @@ export default function ChatApp({ initialPrompt }) {
             ) : (
               <div
                 key={idx}
-                className="bg-white border border-black text-black p-3 rounded-lg shadow-sm self-end w-fit max-w-full"
+                className="bg-white border border-black text-black p-3 rounded-lg shadow-sm self-end w-full max-w-full"
               >
                 {msg.text}
               </div>

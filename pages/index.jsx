@@ -17,7 +17,9 @@ export default function Home(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [textres, Settextres] = useState("");
   const [tutorialState, SetTutorialState] = useState(false);
+
   const [yoloRes, SetYoloRes] = useState(false);
+  const [uploadRes,SetUploadRes] = useState(false);
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const imageListRef = ref(storage, "ingredients/")
@@ -44,6 +46,7 @@ export default function Home(props) {
 
       SetUploadImageUrl(url);
       setIsLoading(false);
+      SetUploadRes(true)
 
       // ✅ Wait for API response
       // const response = await axios.get("http://localhost:8000/detect/latest");
@@ -66,7 +69,7 @@ export default function Home(props) {
   return (
     <div className="flex justify-center items-center h-screen w-screen">
       {tutorialState && (
-        <div className="absolute inset-0 flex justify-center items-center bg-gradient-to-br from-white to-gray-100 text-gray-800 z-50 px-6">
+        <div className="mt-[200px] md:mt-0 absolute inset-0 flex justify-center items-center bg-gradient-to-br from-white to-gray-100 text-gray-800 z-50 px-6">
           <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-xl w-full border border-gray-200">
 
             <h2 className="text-3xl font-bold text-center text-green-600 mb-4">
@@ -135,7 +138,7 @@ export default function Home(props) {
             {/* Loading Spinner or Image */}
             <div className="flex justify-center items-center w-full min-h-[100px]">
               {isLoading && (
-                <div className="animate-spin h-10 w-10 text-blue-500">
+                <div className="animate-spin h-10 w-10 text-green-600">
                   <svg viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0H4z" />
@@ -160,6 +163,14 @@ export default function Home(props) {
             <div className="w-full md:w-[400px]">
               <Chat initialPrompt={textres} />
             </div>)}
+          {!yoloRes && uploadRes && (
+            <div className="animate-spin h-10 w-10 text-green-600">
+              <svg viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0H4z" />
+              </svg>
+            </div>
+          )}
         </div>
       </div>
     </div >

@@ -7,6 +7,7 @@ export default function ChatApp({ initialPrompt }) {
   const [defaultinputText, setDefaultInputText] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [displayedText, setDisplayedText] = useState('');
 
   const handleSend = async () => {
     const message = inputText;
@@ -21,6 +22,7 @@ export default function ChatApp({ initialPrompt }) {
       //   const response = await axios.post('https://chatbot-openthaigpt-demo.onrender.com/chat?data=' + encodeURIComponent(inputText));
       const response = await axios.post('https://chatbot-4o-mini-demo.onrender.com/chat?data=' + encodeURIComponent(inputText));
       const botMessage = { text: response.data.response, sender: 'bot' };
+      console.log('🧠 AI Response:', response.data.response);
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
@@ -32,32 +34,46 @@ export default function ChatApp({ initialPrompt }) {
   };
 
   function formatChatGPTResponse(text) {
-    text = removeDuplicateLines(text); // 👈 clean up first
+    text = removeDuplicateLines(text);
 
     const lines = text.split('\n').filter(line => line.trim() !== '');
     let formatted = '';
+    let currentItem = '';
+    let inList = false;
 
-    // Detect if it's a list-style message
-    const isList = lines.some(line => line.match(/^\d+\.\s\*\*/));
+    for (let line of lines) {
+      const listStart = line.match(/^\d+\.\s\*\*(.+?)\*\*/); // Match: 1. **Title**
 
-    if (isList) {
-      formatted += `<p>${lines[0]}</p><ol>`;
-      for (let i = 1; i < lines.length; i++) {
-        const match = lines[i].match(/^\d+\.\s\*\*(.+?)\*\*\:\s(.+)/);
-        if (match) {
-          const title = match[1];
-          const detail = match[2];
-          formatted += `<li><strong>${title}</strong>: ${detail}</li>`;
+      if (listStart) {
+        if (inList) {
+          formatted += `<li>${currentItem}</li>`;
+          currentItem = '';
+        } else {
+          formatted += `<ol>`;
+          inList = true;
         }
+
+        const title = listStart[1];
+        currentItem = `<strong>${title}</strong>`;
+      } else if (inList && line.startsWith('-')) {
+        currentItem += `<br/>${line.trim()}`;
+      } else {
+        if (inList) {
+          formatted += `<li>${currentItem}</li></ol>`;
+          inList = false;
+          currentItem = '';
+        }
+        formatted += `<p>${line}</p>`;
       }
-      formatted += '</ol>';
-    } else {
-      // Fallback to paragraphs
-      formatted = lines.map(line => `<p>${line}</p>`).join('');
+    }
+
+    if (inList && currentItem) {
+      formatted += `<li>${currentItem}</li></ol>`;
     }
 
     return formatted;
   }
+
 
   function removeDuplicateLines(text) {
     const lines = text.split('\n');

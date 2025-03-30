@@ -1,6 +1,6 @@
 import { useState, useEffect, use } from 'react';
 import axios from 'axios';
-import clsx from 'clsx';
+
 
 export default function ChatApp({ initialPrompt }) {
   const [inputText, setInputText] = useState('');
@@ -73,40 +73,43 @@ export default function ChatApp({ initialPrompt }) {
   }, [initialPrompt]);
 
   return (
-    <div className="flex flex-col items-center h-[400px] w-[370px] md:w-[400px] p-4 ">
-      <div className="w-full max-w-lg bg-white border-black border-2 rounded-lg p-4 flex flex-col h-full">
-        <div className="flex-1 overflow-y-auto mb-4">
-          {messages.map((msg, idx) => (
+    <div className="flex flex-col items-center h-[400px] w-[370px] md:w-[400px] p-4">
+      <div className="w-full h-full bg-white border-2 border-gray-300 rounded-xl shadow-lg p-4 flex flex-col">
+
+        {/* Chat Messages */}
+        <div className="flex-1 overflow-y-auto pr-1 mb-3 space-y-2">
+          {messages.map((msg, idx) =>
             msg.sender === 'bot' ? (
               <div
                 key={idx}
                 dangerouslySetInnerHTML={{ __html: formatChatGPTResponse(msg.text) }}
-                className="mb-2 p-2 rounded-lg bg-gray-200 text-black self-start"
+                className="bg-green-100 text-black p-3 rounded-lg shadow-sm w-fit max-w-full"
               />
             ) : (
               <div
                 key={idx}
-                className="mb-2 p-2 rounded-lg border-2 border-black text-black self-end"
+                className="bg-white border border-black text-black p-3 rounded-lg shadow-sm self-end w-fit max-w-full"
               >
                 {msg.text}
               </div>
             )
-          ))}
-          {loading && <div className="text-center text-gray-500">Typing...</div>}
+          )}
+          {loading && <div className="text-center text-gray-500 text-sm">AI is thinking...</div>}
         </div>
 
-        <div className="flex items-center gap-2 justify-between w-[305px] md:w-auto ">
+        {/* Input Bar */}
+        <div className="flex items-center gap-2 mt-auto">
           <input
             type="text"
-            className="flex-1 p-2 border border-gray-300 rounded-lg"
             placeholder="Ask anything..."
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+            className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition"
           />
           <button
             onClick={handleSend}
-            className="py-1.5 px-4 rounded-md font-medium hover:bg-black hover:border-2 hover:text-white duration-100 active:bg-white active:bottom-2 active:text-black border-black border-2 "
+            className="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 active:bg-green-800 transition duration-150"
           >
             Send
           </button>

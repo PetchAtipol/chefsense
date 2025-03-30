@@ -99,62 +99,65 @@ export default function Home(props) {
           </div>
         </div>
       )}
-      <div className={clsx("flex-col mt-[150px] md:mt-0")}>
-        <div className="flex w-full justify-center h-auto">
-          <p className="font-thin text-[75px] mt-10 md:mt-0 md:text-[100px]">Chefsense</p>
+      <div className={clsx("flex flex-col mt-[150px] md:mt-0 items-center px-4")}>
+        {/* Title */}
+        <div className="flex justify-center w-full">
+          <p className="font-extrabold text-[50px] md:text-[100px] text-green-600 drop-shadow-md">Chefsense</p>
         </div>
-        <div className="flex-col mt-12 md:mt-0 flex md:flex-row justify-center items-center w-[375px] md:w-auto h-auto border-2 px-5 py-5 rounded-md border-gray-600">
-          <div className="flex-col flex">
-            <div className="flex justify-between w-[350px] md:w-auto">
-              <input type="file"
+
+        {/* Upload Section Container */}
+        <div className="flex flex-col md:flex-row justify-center items-center mt-12 w-full max-w-4xl border border-gray-300 shadow-lg rounded-xl bg-white p-6 space-y-6 md:space-y-0 md:space-x-10">
+
+          {/* Left Column: Upload + Preview */}
+          <div className="flex flex-col items-center space-y-4 w-full md:w-auto">
+
+            {/* Upload Inputs */}
+            <div className="flex flex-col md:flex-row gap-3 items-center">
+              <input
+                type="file"
                 id="fileInput"
-                onChange={(e) => { SetImageUpload(e.target.files[0]) }}
-                className="w-[250px] file:bg-white file:rounded-md file:font-medium file:py-1.5 file:px-3 file:hover:bg-black file:hover:border-2 file:hover:text-white file:duration-100 file:active:bg-white file:active:bottom-2 file:active:text-black file:border-black file:border-2 " />
-              <button onClick={uploadImage} className="py-1.5 px-3 rounded-md font-medium hover:bg-black hover:border-2 hover:text-white duration-100 active:bg-white active:bottom-2 active:text-black border-black border-2 ">
+                onChange={(e) => SetImageUpload(e.target.files[0])}
+                className="w-[250px] file:bg-white file:text-green-700 file:border-2 file:border-green-600 file:px-4 file:py-2 file:rounded-md file:font-medium active:bg-green-800
+               hover:file:bg-green-600 hover:file:text-white transition duration-200"
+              />
+              <button
+                onClick={uploadImage}
+                className="px-4 py-2 rounded-md border-2 border-green-600 font-medium text-green-700 hover:bg-green-600 hover:text-white transition duration-200 active:bg-green-800"
+              >
                 Upload
               </button>
             </div>
-            <div className="flex w-full justify-center mt-0 md:mt-5">
+
+
+            {/* Loading Spinner or Image */}
+            <div className="flex justify-center items-center w-full min-h-[100px]">
               {isLoading && (
-                <div className="flex justify-center items-center">
-                  <svg className="animate-spin h-10 w-10 text-blue-500" viewBox="0 0 24 24">
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 0116 0H4z"
-                    />
+                <div className="animate-spin h-10 w-10 text-blue-500">
+                  <svg viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0H4z" />
                   </svg>
                 </div>
               )}
               {uploadImageUrl && (
                 <Image
-                  className="rounded-md mt-2 md:mt-0 "
+                  className="rounded-lg shadow-md"
                   src={uploadImageUrl}
                   width={300}
                   height={300}
                   alt="Uploaded image"
-                  onLoadingComplete={handleImageLoad}  // Trigger when loading completes
+                  onLoadingComplete={handleImageLoad}
                 />
               )}
             </div>
           </div>
-          <Chat
-            initialPrompt={textres}
-          />
-          {/* <Link href="/chat" className="py-1.5 px-3 rounded-md font-medium hover:bg-black hover:border-0 hover:text-white duration-100 active:bg-white active:bottom-2 active:text-black border-black border-2 ">Go to Chat</Link> */}
 
+          {/* Right Column: Chat Component */}
+          <div className="w-full md:w-[400px]">
+            <Chat initialPrompt={textres} />
+          </div>
         </div>
       </div>
-
     </div >
   );
 }

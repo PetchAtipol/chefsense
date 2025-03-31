@@ -19,7 +19,7 @@ export default function Home(props) {
   const [tutorialState, SetTutorialState] = useState(false);
 
   const [yoloRes, SetYoloRes] = useState(false);
-  const [uploadRes,SetUploadRes] = useState(false);
+  const [uploadRes, SetUploadRes] = useState(false);
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const imageListRef = ref(storage, "ingredients/")
@@ -28,14 +28,40 @@ export default function Home(props) {
     setIsLoading(false);  // Hide spinner once the image is loaded
   };
 
+  const resizeImage = (file, maxWidth, maxHeight) => {
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+        const newWidth = img.width * ratio;
+        const newHeight = img.height * ratio;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+        canvas.toBlob((blob) => {
+          resolve(new File([blob], file.name, { type: file.type }));
+        }, file.type);
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
   const uploadImage = async () => {  // ✅ Mark function as async
     if (imageUpload == null) return;
+
+    // ✅ Resize image to 640x640 before uploading
+    const resizedImage = await resizeImage(imageUpload, 640, 640);
 
     const imageRef = ref(storage, `ingredients/${imageUpload.name + v4()}`);
 
     try {
       // ✅ Upload Image
-      const snapshot = await uploadBytes(imageRef, imageUpload);
+      const snapshot = await uploadBytes(imageRef, resizedImage);
       SetImageUpload(null);
       SetUploadImageUrl(null);
       setIsLoading(true);
